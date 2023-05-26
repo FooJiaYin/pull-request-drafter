@@ -1,10 +1,12 @@
+TEMPLATE_FILE=template.md
+OUTPUT_FILE=pull_request.md
 TARGET_BRANCH=main
-SOURCE_BRANCH=demo
+SOURCE_BRANCH=dev
 default_format="%s - %h"
 hide_words=("feat" "fix")
 
 # Read template from template.md
-template=$(cat template.md)
+template=$(cat $TEMPLATE_FILE)
 
 # Get git commits
 printed=()
@@ -43,5 +45,5 @@ while read -r line; do
 
 done < <(echo -e "${template}" | grep -o "<!--.*-->")
 
-template=$(echo -e "${template}"  | sed '1h;2,$H;$!d;g; s|\^NowALiNiA\^\* |\\n- |g')
-echo -e "${template}" > PR.md
+template=$(echo -e "${template}"  | sed '1h;2,$H;$!d;g; s|\^NowALiNiA\^\* |\\n- |g' | sed 's|\^HaSz\^|#|g')
+echo -e "${template}" > $OUTPUT_FILE
